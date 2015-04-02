@@ -1,3 +1,5 @@
+[![Build Status](http://img.shields.io/travis/JustinAiken/justinaiken_dotfiles-cookbook/master.svg)](https://travis-ci.org/JustinAiken/justinaiken_dotfiles-cookbook)
+
 # justinaiken_dotfiles
 
 This is a cookbook to install and sets up my [dotfiles](https://github.com/JustinAiken/dotfiles).
