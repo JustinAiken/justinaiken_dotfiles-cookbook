@@ -32,6 +32,7 @@ define :justinaiken_dotfiles, install_zsh: true, switch_shell: true, install_oh_
     repository node[:justinaiken_dotfiles][:git_repository]
     reference  node[:justinaiken_dotfiles][:git_revision]
     action :sync
+    enable_submodules true
 
     notifies :run, "bash[sync_dotfiles]"
   end
