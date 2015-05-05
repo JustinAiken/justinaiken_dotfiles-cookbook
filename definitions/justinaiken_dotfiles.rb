@@ -3,8 +3,6 @@ define :justinaiken_dotfiles, install_zsh: true, switch_shell: true, install_oh_
   username = params[:name]
   homedir  = node['etc']['passwd'][username]['dir']
 
-  package 'git'
-
   if params[:install_zsh]
     package 'zsh'
   end
@@ -20,6 +18,7 @@ define :justinaiken_dotfiles, install_zsh: true, switch_shell: true, install_oh_
     git "#{homedir}/.oh-my-zsh" do
       repository node[:justinaiken_dotfiles][:oh_my_zsh_repository]
       reference  node[:justinaiken_dotfiles][:oh_my_zsh_revision]
+      user username
       action :sync
     end
   end
@@ -31,6 +30,7 @@ define :justinaiken_dotfiles, install_zsh: true, switch_shell: true, install_oh_
   git "#{homedir}/dotfiles" do
     repository node[:justinaiken_dotfiles][:git_repository]
     reference  node[:justinaiken_dotfiles][:git_revision]
+    user username
     action :sync
     enable_submodules true
 
@@ -40,8 +40,14 @@ define :justinaiken_dotfiles, install_zsh: true, switch_shell: true, install_oh_
   bash "sync_dotfiles" do
     cwd  "#{homedir}/dotfiles"
     code "chmod +x sync.sh && ./sync.sh"
+    user username
 
     # Don't run unless git sync changes:
     action :nothing
+  end
+
+  bash "chown #{homedir}" do
+    command "chown -R #{username}:#{username} #{homedir}"
+    action :run
   end
 end
